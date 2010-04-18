@@ -4,13 +4,13 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "ratom"
-    gem.summary = %Q{Atom Syndication and Publication API}
+    gem.name = "ratom-ssl"
+    gem.summary = %Q{Atom Syndication and Publication API with SSL}
     gem.description = %Q{A fast Atom Syndication and Publication API based on libxml}
-    gem.email = "seangeo@gmail.com"
-    gem.homepage = "http://github.com/seangeo/ratom"
+    gem.email = "jkentonwhite@gmail.com"
+    gem.homepage = "http://github.com/KentonWhite/ratom-ssl"
     gem.rubyforge_project = 'ratom'
-    gem.authors = ["Peerworks", "Sean Geoghegan"]
+    gem.authors = ["Peerworks", "Sean Geoghegan", "Kenton White"]
     gem.add_development_dependency "rspec"
     gem.add_dependency 'libxml-ruby', '>= 1.1.2'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
