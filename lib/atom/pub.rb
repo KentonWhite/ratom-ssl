@@ -1,6 +1,6 @@
 # Copyright (c) 2008 The Kaphan Foundation
 #
-# For licensing information see LICENSE.
+# For licensing information see LICENSE.txt.
 #
 # Please visit http://www.peerworks.org/contact for further information.
 #
@@ -12,6 +12,7 @@ require 'atom/version'
 require 'xml/libxml'
 require 'uri'
 require 'net/http'
+require 'net/https'
 
 module Atom
   module Pub
@@ -134,7 +135,9 @@ module Atom
       def publish(entry, opts = {})
         uri = URI.parse(href)
         response = nil
-        Net::HTTP.start(uri.host, uri.port) do |http|
+        http_obj = Net::HTTP.new(uri.host, uri.port)
+        http_obj.use_ssl = true if uri.scheme == 'https'
+        http_obj.start do |http|
           request = Net::HTTP::Post.new(uri.request_uri, headers)
           if opts[:user] && opts[:pass]
             request.basic_auth(opts[:user], opts[:pass])
