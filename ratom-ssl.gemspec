@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "lib/atom/pub.rb",
      "lib/atom/version.rb",
      "lib/atom/xml/parser.rb",
+     "ratom-ssl.gemspec",
      "spec/app/member_entry.atom",
      "spec/app/service.xml",
      "spec/atom/pub_spec.rb",
