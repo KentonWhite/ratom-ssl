@@ -258,7 +258,13 @@ Or destroy an entry with:
 rAtom doesn't store these credentials anywhere within the object model so you will need to pass them as arguments to every
 method call that requires them.  This might be a bit of a pain but it does make things simpler and it means that I'm not responsible
 for protecting your credentials, although if you are using HTTP Basic Authentication there is a good chance your credentials aren't
-very well protected anyway.
+very well protected anyway.  
+
+== SSL Authenication
+
+Methods that involve HTTP Basic Authentication can use SSL encryption.  Make the standard HTTPS request and pass the credentials as :user and :pass parameters.
+
+Tested and verified methods are load_feed and publish.
 
 === AuthHMAC authentication
 
@@ -276,14 +282,14 @@ As of version 0.5.1 rAtom also support authentication via HMAC request signing u
 
 The source repository is accessible via GitHub:
 
-  git clone git://github.com/seangeo/ratom.git
+  git://github.com/KentonWhite/ratom-ssl.git
 
 == Contact Information
 
-The project page is at http://github.com/seangeo/ratom. Please file any bugs or feedback
-using the trackers and forums there.
+The project page is at http://github.com/KentonWhite/ratom-ssl. Please file any bugs or feedback
+using the trackers and forums there.  This is a fork of the project by Sean Geoghegan at ithub.com/seangeo/ratom.
 
 == Authors and Contributors
 
-rAtom was developed by Peerworks[http://peerworks.org] and written by Sean Geoghegan.
+rAtom was developed by Peerworks[http://peerworks.org] and written by Sean Geoghegan.  SSL was added by Kenton White.
 
