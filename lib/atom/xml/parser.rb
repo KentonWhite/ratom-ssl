@@ -4,7 +4,8 @@
 #
 # Please visit http://www.peerworks.org/contact for further information.
 #
-require 'net/http'
+require 'net/http' 
+require 'net/https'
 require 'time'
 
 # Just a couple methods form transforming strings
@@ -265,9 +266,11 @@ module Atom
                 when IO
                   XML::Reader.io(o)
                 when URI
-                  raise ArgumentError, "#{class_name}.load only handles http & https URIs" if o.scheme != 'http' || o.scheme != 'https'
+                  # raise ArgumentError, "#{class_name}.load only handles http & https URIs" if o.scheme != 'https' || o.scheme != 'http'
                   response = nil
-                  Net::HTTP.start(o.host, o.port) do |http|
+                  http_obj = Net::HTTP.new(o.host, o.port)
+                  http_obj.use_ssl = true if o.scheme == 'https'
+                  http_obj.start do |http|
                     request = Net::HTTP::Get.new(o.request_uri)
                     if opts[:user] && opts[:pass]
                       request.basic_auth(opts[:user], opts[:pass])
