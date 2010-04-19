@@ -265,7 +265,7 @@ module Atom
                 when IO
                   XML::Reader.io(o)
                 when URI
-                  raise ArgumentError, "#{class_name}.load only handles http URIs" if o.scheme != 'http'
+                  raise ArgumentError, "#{class_name}.load only handles http & https URIs" if o.scheme != 'http' || o.scheme != 'https'
                   response = nil
                   Net::HTTP.start(o.host, o.port) do |http|
                     request = Net::HTTP::Get.new(o.request_uri)
