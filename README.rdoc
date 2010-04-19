@@ -287,7 +287,7 @@ The source repository is accessible via GitHub:
 == Contact Information
 
 The project page is at http://github.com/KentonWhite/ratom-ssl. Please file any bugs or feedback
-using the trackers and forums there.  This is a fork of the project by Sean Geoghegan at ithub.com/seangeo/ratom.
+using the trackers and forums there.  This is a fork of the project by Sean Geoghegan at http://github.com/seangeo/ratom.
 
 == Authors and Contributors
 
