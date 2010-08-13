@@ -188,7 +188,9 @@ module Atom
       if edit = edit_link
         uri = URI.parse(edit.href)
         response = nil
-        Net::HTTP.start(uri.host, uri.port) do |http|
+        http_obj = Net::HTTP.new(uri.host, uri.port)
+        http_obj.use_ssl = true if uri.scheme == 'https'
+        http_obj.start do |http|
           request = Net::HTTP::Put.new(uri.request_uri, headers)
           if opts[:user] && opts[:pass]
             request.basic_auth(opts[:user], opts[:pass])
@@ -217,7 +219,9 @@ module Atom
       if edit = edit_link
         uri = URI.parse(edit.href)
         response = nil
-        Net::HTTP.start(uri.host, uri.port) do |http|
+        http_obj = Net::HTTP.new(uri.host, uri.port)
+        http_obj.use_ssl = true if uri.scheme == 'https'
+        http_obj.start do |http|
           request = Net::HTTP::Delete.new(uri.request_uri, {'Accept' => 'application/atom+xml', 'User-Agent' => "rAtom #{Atom::VERSION::STRING}"})
           if opts[:user] && opts[:pass]
             request.basic_auth(opts[:user], opts[:pass])
