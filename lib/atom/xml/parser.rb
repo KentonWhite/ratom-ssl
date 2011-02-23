@@ -269,7 +269,7 @@ module Atom
                   # raise ArgumentError, "#{class_name}.load only handles http & https URIs" if o.scheme != 'https' || o.scheme != 'http'
                   response = nil
                   http_obj = Net::HTTP.new(o.host, o.port)
-                  if uri.scheme == 'https' then
+                  if o.scheme == 'https' then
                     http_obj.use_ssl = true 
                     http_obj.ca_path = '/etc/ssl/certs' if File.exists?('/etc/ssl/certs') # Ubuntu
                     http_obj.ca_file = '/opt/local/share/curl/curl-ca-bundle.crt' if File.exists?('/opt/local/share/curl/curl-ca-bundle.crt') # Mac OS X          
