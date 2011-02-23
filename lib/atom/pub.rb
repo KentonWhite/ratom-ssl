@@ -136,7 +136,11 @@ module Atom
         uri = URI.parse(href)
         response = nil
         http_obj = Net::HTTP.new(uri.host, uri.port)
-        http_obj.use_ssl = true if uri.scheme == 'https'
+        if uri.scheme == 'https' then
+          http_obj.use_ssl = true 
+          http_obj.ca_path = '/etc/ssl/certs' if File.exists?('/etc/ssl/certs') # Ubuntu
+          http_obj.ca_file = '/opt/local/share/curl/curl-ca-bundle.crt' if File.exists?('/opt/local/share/curl/curl-ca-bundle.crt') # Mac OS X          
+        end
         http_obj.start do |http|
           request = Net::HTTP::Post.new(uri.request_uri, headers)
           if opts[:user] && opts[:pass]
@@ -189,7 +193,11 @@ module Atom
         uri = URI.parse(edit.href)
         response = nil
         http_obj = Net::HTTP.new(uri.host, uri.port)
-        http_obj.use_ssl = true if uri.scheme == 'https'
+        if uri.scheme == 'https' then
+          http_obj.use_ssl = true 
+          http_obj.ca_path = '/etc/ssl/certs' if File.exists?('/etc/ssl/certs') # Ubuntu
+          http_obj.ca_file = '/opt/local/share/curl/curl-ca-bundle.crt' if File.exists?('/opt/local/share/curl/curl-ca-bundle.crt') # Mac OS X          
+        end
         http_obj.start do |http|
           request = Net::HTTP::Put.new(uri.request_uri, headers)
           if opts[:user] && opts[:pass]
@@ -220,7 +228,11 @@ module Atom
         uri = URI.parse(edit.href)
         response = nil
         http_obj = Net::HTTP.new(uri.host, uri.port)
-        http_obj.use_ssl = true if uri.scheme == 'https'
+        if uri.scheme == 'https' then
+          http_obj.use_ssl = true 
+          http_obj.ca_path = '/etc/ssl/certs' if File.exists?('/etc/ssl/certs') # Ubuntu
+          http_obj.ca_file = '/opt/local/share/curl/curl-ca-bundle.crt' if File.exists?('/opt/local/share/curl/curl-ca-bundle.crt') # Mac OS X          
+        end
         http_obj.start do |http|
           request = Net::HTTP::Delete.new(uri.request_uri, {'Accept' => 'application/atom+xml', 'User-Agent' => "rAtom #{Atom::VERSION::STRING}"})
           if opts[:user] && opts[:pass]
