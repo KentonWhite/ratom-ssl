@@ -141,22 +141,29 @@ module Atom
       # makes this method more complicated that it needs to be.
       #
       def to_xml(nodeonly = false, root_name = self.class.name.demodulize.downcase, namespace = nil, namespace_map = nil)
+        # doc is required for importing html nodes
+        doc = XML::Document.new
         namespace_map = NamespaceMap.new(self.class.namespace) if namespace_map.nil?
-        node = XML::Node.new(root_name)
+        doc.root = XML::Node.new(root_name)
+        node = doc.root
         node['xmlns'] = self.class.namespace unless nodeonly || !self.class.respond_to?(:namespace)
         self.class.extensions_namespaces.each do |ns_alias,uri|
           node["xmlns:#{ns_alias}"] = uri
         end
-
+        
         self.class.ordered_element_specs.each do |spec|
           if spec.single?
             if attribute = self.send(spec.attribute)
-              if attribute.respond_to?(:to_xml)
+              if attribute.respond_to?(:to_xml) 
                 node << attribute.to_xml(true, spec.name, spec.options[:namespace], namespace_map)
-              else
+              else 
                 n =  XML::Node.new(spec.name)
+                n = doc.import n
+                n.attributes['type'] = 'xhtml'
                 n['xmlns'] = spec.options[:namespace] if spec.options[:namespace]
-                n << (attribute.is_a?(Time)? attribute.xmlschema : attribute.to_s)
+                a = XML::HTMLParser.string(attribute.to_s).parse.find('body')[0]
+                a = doc.import a 
+                n << (attribute.is_a?(Time)? attribute.xmlschema : a) 
                 node << n
               end
             end
@@ -176,7 +183,7 @@ module Atom
         
         self.class.attributes.each do |attribute|
           if value = self.send("#{attribute.sub(/:/, '_')}")
-            if value != 0
+            if value != 0 
               node[attribute] = value.to_s
             end
           end
@@ -199,14 +206,14 @@ module Atom
             end
           end
         end
-        
+                
         unless nodeonly
           namespace_map.each do |ns, prefix|
             node["xmlns:#{prefix}"] = ns
           end
           
-          doc = XML::Document.new
-          doc.root = node
+          # doc = XML::Document.new
+          # doc.root = node
           doc.to_s
         else
           node
