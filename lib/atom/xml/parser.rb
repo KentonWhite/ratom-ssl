@@ -141,7 +141,7 @@ module Atom
       # makes this method more complicated that it needs to be.
       #
       def to_xml(nodeonly = false, root_name = self.class.name.demodulize.downcase, namespace = nil, namespace_map = nil)
-        # doc is required for importing html nodes
+        # doc is required for importing html nodes 
         doc = XML::Document.new
         namespace_map = NamespaceMap.new(self.class.namespace) if namespace_map.nil?
         doc.root = XML::Node.new(root_name)
@@ -151,32 +151,40 @@ module Atom
           node["xmlns:#{ns_alias}"] = uri
         end
         
-        self.class.ordered_element_specs.each do |spec|
-          if spec.single?
+        self.class.ordered_element_specs.each do |spec| 
+        if spec.single? 
             if attribute = self.send(spec.attribute)
-              if attribute.respond_to?(:to_xml) 
+              if attribute.respond_to?(:to_xml)  
                 node << attribute.to_xml(true, spec.name, spec.options[:namespace], namespace_map)
-              else 
+              else
                 n =  XML::Node.new(spec.name)
                 n = doc.import n
-                n.attributes['type'] = 'xhtml'
-                n['xmlns'] = spec.options[:namespace] if spec.options[:namespace]
-                a = XML::HTMLParser.string(attribute.to_s).parse.find('body')[0]
-                a = doc.import a 
-                n << (attribute.is_a?(Time)? attribute.xmlschema : a) 
+                if spec.options[:class].nil? 
+                  # Handle simple elements
+                  # Those that aren't themselves classes to be parsed
+                  n.content = attribute 
+                else
+                  n.attributes['type'] = 'xhtml'
+                  n['xmlns'] = spec.options[:namespace] if spec.options[:namespace]
+                  a = XML::HTMLParser.string(attribute.to_s).parse.find('body')[0]
+                  a = doc.import a
+                  n << (attribute.is_a?(Time)? attribute.xmlschema : a) 
+                end
                 node << n
               end
             end
           else
             self.send(spec.attribute).each do |attribute|
               if attribute.respond_to?(:to_xml)
-                node << attribute.to_xml(true, spec.name.singularize, nil, namespace_map)
+                a = attribute.to_xml(true, spec.name.singularize, nil, namespace_map)
+                a = doc.import a 
+                node << a 
               else
                 n = XML::Node.new(spec.name.singularize)
                 n['xmlns'] = spec.options[:namespace] if spec.options[:namespace]
                 n << attribute.to_s
                 node << n
-              end
+              end 
             end
           end
         end
@@ -213,7 +221,7 @@ module Atom
           end
           
           # doc = XML::Document.new
-          # doc.root = node
+          # doc.root = node 
           doc.to_s
         else
           node
