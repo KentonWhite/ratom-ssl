@@ -288,7 +288,8 @@ module Atom # :nodoc:
           @type = "xhtml"
         when XML::Reader
           super("")   
-          xml = o
+          xml = o 
+          xml.set_option("recover", 1)
           parse(xml, :once => true)
           starting_depth = xml.depth
 
