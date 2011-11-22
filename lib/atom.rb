@@ -289,12 +289,15 @@ module Atom # :nodoc:
         when XML::Reader
           super("")   
           xml = o 
-          xml.set_option("recover", 1)
           parse(xml, :once => true)
           starting_depth = xml.depth
 
-          # Get the next element - should be a div according to the atom spec
-          while xml.read && xml.node_type != XML::Reader::TYPE_ELEMENT; end        
+          # Get the next element - should be a div according to the atom spec 
+          begin
+            while xml.read && xml.node_type != XML::Reader::TYPE_ELEMENT; end 
+          rescue LibXML::XML::Error => error 
+            p error.message
+          end       
 
           if xml.local_name == 'div' && xml.namespace_uri == XHTML        
             set_content(xml.read_inner_xml.strip.gsub(/\s+/, ' '))
