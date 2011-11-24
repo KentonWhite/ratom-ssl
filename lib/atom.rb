@@ -299,7 +299,7 @@ module Atom # :nodoc:
             p error.message
           end       
 
-          if xml.local_name == 'div' && xml.namespace_uri == XHTML        
+          if xml.read_inner_xml && xml.local_name == 'div' && xml.namespace_uri == XHTML        
             set_content(xml.read_inner_xml.strip.gsub(/\s+/, ' '))
           else
             set_content(xml.read_outer_xml)
