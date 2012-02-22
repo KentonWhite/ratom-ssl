@@ -300,7 +300,7 @@ module Atom # :nodoc:
           end       
 
           if xml.read_inner_xml && xml.local_name == 'div' && xml.namespace_uri == XHTML        
-            set_content(xml.read_inner_xml.strip.gsub(/\s+/, ' '))
+            set_content(xml.read_inner_xml)
           else
             set_content(xml.read_outer_xml)
           end
